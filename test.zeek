@@ -1,4 +1,5 @@
 @load base/frameworks/sumstats
+
 event http_reply(c: connection, version: string, code: count, reason: string) 
 {
     SumStats::observe("response", SumStats::Key($host=c$id$orig_h), SumStats::Observation($num=1));
@@ -8,6 +9,8 @@ event http_reply(c: connection, version: string, code: count, reason: string)
         SumStats::observe("responseUnique404", SumStats::Key($host=c$id$orig_h), SumStats::Observation($str=c$http$uri));
     }
 }
+
+
 event zeek_init() 
 {
     local rAll = SumStats::Reducer($stream="response", $apply=set(SumStats::SUM));
