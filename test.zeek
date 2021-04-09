@@ -13,10 +13,10 @@ event http_reply(c: connection, version: string, code: count, reason: string)
 
 event zeek_init() 
 {
-    local rAll = SumStats::Reducer($stream="response", $apply=set(SumStats::SUM));
-    local r404 = SumStats::Reducer($stream="response404", $apply=set(SumStats::SUM));
-    local rUnique404 = SumStats::Reducer($stream="responseUnique404", $apply=set(SumStats::UNIQUE));
-    SumStats::create([$name="idshwk4", $epoch=10min, $reducers=set(rAll, r404, rUnique404), $epoch_result(ts: time, key: SumStats::Key, result: SumStats::Result) = {
+    local rs1 = SumStats::Reducer($stream="response", $apply=set(SumStats::SUM));
+    local rs2 = SumStats::Reducer($stream="response404", $apply=set(SumStats::SUM));
+    local rs3 = SumStats::Reducer($stream="responseUnique404", $apply=set(SumStats::UNIQUE));
+    SumStats::create([$name="idshwk4", $epoch=10min, $reducers=set(rs1, rs2, rs3), $epoch_result(ts: time, key: SumStats::Key, result: SumStats::Result) = {
         local r1 = result["response"];
         local r2 = result["response404"];
         local r3 = result["responseUnique404"];
